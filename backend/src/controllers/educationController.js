@@ -1,4 +1,4 @@
-let educationData = [];
+const Education = require('../models/educationSchema');
 
 exports.getAllEducation = (req, res) => {
     res.json(educationData);
