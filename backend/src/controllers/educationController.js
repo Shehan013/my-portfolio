@@ -29,6 +29,8 @@ exports.getEducationById = async (req, res) => {
 
 exports.createEducation = async (req, res) => {
     try{
+        const { institution, degree, fieldOfStudy, startDate, endDate, description } = req.body;
+        
         const newEducation = await Education.create({
             institution,
             degree,
@@ -78,30 +80,23 @@ exports.updateEducation = async (req, res) => {
     }
 };
 
-exports.updateEducation = (req, res) => {
-    const {id} = req.params;
-    const index = educationData.findIndex(ed => ed.id === parseInt(id));
+exports.deleteEducation = async (req, res) => {
+    try{
+        const {id} = req.params;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        
+        const education = await Education.findByIdAndDelete(id);
+        if (!education) {
+            return res.status(404).json({ message: 'Education not found' });
+        }
+        res.json({ message: 'Education deleted successfully', deletedEducation: education });
 
-    if(index === -1)
-    {
-        return res.status(404).json({ message: 'Education not found' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
     }
-
-    educationData[index] = {...educationData[index], ...req.body };
-    res.json({ message: 'Education updated successfully', updatedEducation: educationData[index] });
-};
-
-exports.deleteEducation = (req, res) => {
-    const {id} = req.params;
-    const index = educationData.findIndex(ed => ed.id === parseInt(id));
-
-    if(index === -1)
-    {
-        return res.status(404).json({ message: 'Education not found' });
-    }
-
-    const deleted = educationData.splice(index, 1);
-    res.json({ message: 'Education deleted successfully', deletedEducation: deleted[0] });
 };
 
 
