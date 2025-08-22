@@ -1,59 +1,81 @@
 const Education = require('../models/educationSchema');
 
-exports.getAllEducation = (req, res) => {
-    res.json(educationData);
+exports.getAllEducation = async (req, res) => {
+    try {
+        const allEducation = await Education.find();
+        res.json(allEducation);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
-exports.getEducationById = (req, res) => {
-    const {id} = req.params;
-    const index = educationData.findIndex(ed => ed.id === parseInt(id));
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Education not found'});
+exports.getEducationById = async (req, res) => {
+    try{
+        const {id} = req.params;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const education = await Education.findById(id);
+        if (!education) {
+            return res.status(404).json({ message: 'Education not found' });
+        }
+        res.json(education);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
     }
-    res.json(educationData[index]);
 };
 
-exports.createEducation = (req, res) => {
-     const {
-        id,
-        institution,
-        degree,
-        fieldOfStudy,
-        startDate,
-        endDate,
-        description
-    } = req.body;
+exports.createEducation = async (req, res) => {
+    try{
+        const newEducation = await Education.create({
+            institution,
+            degree,
+            fieldOfStudy,
+            startDate,
+            endDate,
+            description
+        });
 
-    if (!institution || typeof institution !== 'string') {
-        return res.status(400).json({ message: 'Invalid institution' });
+        res.status(201).json({ message: 'Education added successfully', newEducation });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
     }
-    if(!degree || typeof degree !== 'string') {
-        return res.status(400).json({ message: 'Invalid degree' });
+};
+
+exports.updateEducation = async (req, res) => {
+    try{
+        const {id} = req.params;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+
+        const updateData = {};
+        const allowedFields = ['institution', 'degree', 'fieldOfStudy', 'startDate', 'endDate', 'description'];
+
+        for(const [key, value] of Object.entries(req.body)) {
+            if(value !== undefined) {
+                updateData[key] = value;
+            }
+        }
+
+        const education = await Education.findByIdAndUpdate(
+            id,
+            updateData,
+           { new: true, runValidators: true } //new = return updated doc, runValidators = enforce schema rules
+        );
+    
+        if (!education) {
+            return res.status(404).json({ message: 'Education not found' });
+        }
+        res.json({ message: 'Education updated successfully', updatedEducation: education });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
     }
-    if(fieldOfStudy && typeof fieldOfStudy !== 'string' ) {
-        return res.status(400).json({ message: 'Invalid field of study' });
-    }
-    if(!startDate || !Date.parse(startDate)) {
-        return res.status(400).json({ message: 'Invalid start date' });
-    }
-    if(endDate && !Date.parse(endDate)) {
-        return res.status(400).json({ message: 'Invalid end date' });
-    }
-    if(description && typeof description !== 'string') {
-        return res.status(400).json({ message: 'Invalid description' });
-    }
-    const newEducation = {
-        id: educationData.length + 1,
-        institution,
-        degree,
-        fieldOfStudy,
-        startDate,
-        endDate,
-        description
-    };
-    educationData.push(newEducation);
-    res.status(201).json({ message: 'Education added successfully', newEducation });
 };
 
 exports.updateEducation = (req, res) => {
