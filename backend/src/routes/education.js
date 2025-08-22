@@ -3,7 +3,7 @@ const router = express.Router();
 const validateEducation = require('../middleware/validateEducation');
 const educationController = require('../controllers/educationController');
 
-router.post('/', validateEducation, educationController.createEducation());
+router.post('/', validateEducation, educationController.createEducation);
 router.get('/', educationController.getAllEducation);
 router.get('/:id', educationController.getEducationById);
 router.put('/:id', validateEducation,educationController.updateEducation);
