@@ -34,14 +34,26 @@ const handleDelete = async (id) => {
 if (loading) return <p className="p-4">Loading...</p>;
 if (!items.length) return <p className="p-4">No education entries found.</p>;
 
+const sortEducation = (educationArray) => {
+    return [...educationArray].sort((a,b) => new Date(b.startDate) - new Date(a.startDate));
+};
+
+const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US",{
+        year: "numeric",
+        month: "short",
+    });
+};
+
 return (
     <ul className="space-y-3 p-4">
-        {items.map((ed) => (
+        {sortEducation(items).map((ed) => (
             <li key={ed._id} className="border rounded-xl p-4 flex justify-between items-start">
                 <div>
                 <div className="font-semibold">{ed.institution}</div>
-                <div className="text-sm opacity-80">{ed.degree}{ed.fieldOfStudy? `• ${ed.fieldOfStudy}` : ''}</div>
-                <div className="text-sm opacity-70">{ed.startDate} - {ed.endDate || 'Present'}</div>
+                <div className="text-sm opacity-80">{ed.degree}{ed.fieldOfStudy? ` - ${ed.fieldOfStudy}` : ''}</div>
+                <div className="text-sm opacity-70">{formatDate(ed.startDate)} - {formatDate(ed.endDate) || 'Present'}</div>
                 {ed.description && <p className="text-sm mt-1">{ed.description}</p>}
             </div>
             {admin && (

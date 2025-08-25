@@ -60,7 +60,7 @@ return (
         <input name="degree" value={form.degree} onChange={handleChange} placeholder="Degree *" className="w-full border rounded-lg p-2" />
         <input name="fieldOfStudy" value={form.fieldOfStudy} onChange={handleChange} placeholder="Field of Study (optional)" className="w-full border rounded-lg p-2" />
         <input name="startDate" value={form.startDate} onChange={handleChange} placeholder="Start Date (e.g., 2023 Mar) *" className="w-full border rounded-lg p-2" />
-        <input name="endDate" value={form.endDate} onChange={handleChange} placeholder="End Date (or empty)" className="w-full border rounded-lg p-2" />
+        <input name="endDate" value={form.endDate} onChange={handleChange} placeholder="End Date Only If Ended (or empty)" className="w-full border rounded-lg p-2" />
       <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description (optional)" className="w-full border rounded-lg p-2" rows={3} />
 
       <div className="flex gap-2">

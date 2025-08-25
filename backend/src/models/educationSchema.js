@@ -5,7 +5,7 @@ const educationSchema = new mongoose.Schema({
     degree: { type: String, required: true },
     fieldOfStudy: { type: String},
     startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
+    endDate: { type: Date},
     description: { type: String }
 });
 
