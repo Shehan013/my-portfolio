@@ -57,7 +57,7 @@ exports.updateProject = async (req, res) => {
         const updateData = {};
         const allowedFields = ['projectName', 'techStack', 'role', 'startDate', 'endDate', 'description', 'contributions', 'link'];
         allowedFields.forEach(field => {
-            if(req.body[field]) {
+            if(req.body.hasOwnProperty(field)) {
                 updateData[field] = req.body[field];
             }
         });
