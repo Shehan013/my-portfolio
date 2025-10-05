@@ -1,6 +1,7 @@
 import EducationList from "@/components/EducationList";
 import ProjectList from "@/components/ProjectList";
 import TechSkillList from "@/components/TechSkillList";
+import LeadershipList from "@/components/LeadershipList";
 
 export default function HomePage(){
   return  (
@@ -11,6 +12,8 @@ export default function HomePage(){
        <ProjectList />
         <h1 className="text-2xl font-bold mb-4">Tech Skills</h1>
         <TechSkillList />
+        <h1 className="text-2xl font-bold mb-4">Leadership</h1>
+        <LeadershipList />
     </main>
   );
 }

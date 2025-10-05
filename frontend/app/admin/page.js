@@ -5,20 +5,25 @@ import EducationForm from "@/components/EducationForm";
 import ProjectList from "@/components/ProjectList";
 import ProjectForm from "@/components/ProjectForm";
 import TechSkillList from "@/components/TechSkillList";
-import TechSkillForm  from "@/components/TechSkillForm";    
+import TechSkillForm  from "@/components/TechSkillForm"; 
+import LeadershipList from "@/components/LeadershipList";
+import LeadershipForm from "@/components/LeadershipForm";   
 
 export default function AdminPage(){
     const [selectedEducation, setSelectedEducation] = useState(null);
     const [selectedProject, setSelectedProject] = useState(null);
     const [selectedTechSkill, setSelectedTechSkill] = useState(null);
+    const [selectedLeadership, setSelectedLeadership] = useState(null);
     const [educationRefreshKey, setEducationRefreshKey] = useState(0);
     const [projectRefreshKey, setProjectRefreshKey] = useState(0);
     const [techSkillRefreshKey, setTechSkillRefreshKey] = useState(0);
+    const [leadershipRefreshKey, setLeadershipRefreshKey] = useState(0);
 
     const onSaved = () => {
         setEducationRefreshKey((k) => k + 1);
         setProjectRefreshKey((k) => k + 1);
         setTechSkillRefreshKey((k) => k + 1);
+        setLeadershipRefreshKey((k) => k + 1);
     };
 
     return (
@@ -38,6 +43,12 @@ export default function AdminPage(){
             <div key={`techskill-${techSkillRefreshKey}`}>
                 <TechSkillList admin onEdit={setSelectedTechSkill}/>
             </div>
+            <h1 className="text-2xl font-bold">Admin : Leadership</h1>
+            <LeadershipForm selected={selectedLeadership} onSaved={onSaved}/>
+            <div key={`leadership-${leadershipRefreshKey}`}>
+                <LeadershipList admin onEdit={setSelectedLeadership}/>
+            </div>
+            
         </main>
     );
 }
