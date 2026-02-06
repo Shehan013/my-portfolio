@@ -1,6 +1,6 @@
 'use client'
 import { use, useEffect, useState } from "react";
-import api from '@/lib/api';
+import api from '@/lib/api/api';
 
 const empty = {
     projectName: '',

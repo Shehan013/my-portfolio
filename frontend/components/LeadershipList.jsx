@@ -1,6 +1,7 @@
 'use client'                   
 import { useEffect, useState } from "react";       
-import api from '@/lib/api';
+import api from '@/lib/api/api';
+import { getAllLeadership, deleteLeadership } from "@/lib/api/leadershipApi";
 
 export default function LeadershipList({admin = false, onEdit}){               
     const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function LeadershipList({admin = false, onEdit}){
     const fetchData = async () => {
         setLoading(true);                    
         try{
-            const { data } = await api.get('/leadership');   
+            const { data } = await getAllLeadership();   
             setItems(data);                                  
         } catch (err){
             console.error('Error fetching leadership', err);
@@ -23,7 +24,7 @@ export default function LeadershipList({admin = false, onEdit}){
     const handleDelete = async (id) => {
         if (!confirm('Are you sure you want to delete this item?')) return;   
         try{
-            await api.delete(`/leadership/${id}`);  
+            await deleteLeadership(id); 
             await fetchData();
         } catch (err){
             console.error('Error deleting item', err);

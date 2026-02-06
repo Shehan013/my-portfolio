@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
+import api from "@/lib/api/api";
+import { createLeadership, updateLeadership } from "@/lib/api/leadershipApi";
 
 const empty = {
     role: '',
@@ -36,9 +37,9 @@ export default function LeadershipForm({ selected, onSaved}){
         setSaving(true);
         try {
             if (isEdit) {
-                await api.put(`/leadership/${selected._id}`, form);
+                await updateLeadership(selected._id, form);
             } else {
-                await api.post('/leadership', form);
+                await createLeadership(form);
             }
             onSaved?.();
             setForm(empty); 

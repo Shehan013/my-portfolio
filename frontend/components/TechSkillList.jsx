@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import api from '@/lib/api';
+import api from '@/lib/api/api';
 
 export default function TechSkillList({admin = false, onEdit}){
     const [items, setItems] = useState([]);
