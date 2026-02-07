@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import api from '@/lib/api/api';
+import { getAllEducation, deleteEducation } from "@/lib/api/educationApi";
 
 export default function EducationList({ admin = false, onEdit }){
     const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function EducationList({ admin = false, onEdit }){
 const fetchData = async () => {
     setLoading(true);
     try {
-        const { data } = await api.get('/education');
+        const { data } = await getAllEducation();
         setItems(data);
     } catch (err) {
         console.error(err);
@@ -23,7 +24,7 @@ useEffect(() => { fetchData(); }, []);
 const handleDelete = async (id) => {
     if(!confirm('Are you sure you want to delete this entry?')) return;
     try{
-        await api.delete(`/education/${id}`);
+        await deleteEducation(id);
         await fetchData();
     } catch (err){
         console.error(err);

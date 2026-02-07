@@ -1,6 +1,8 @@
 'use client'
 import { useEffect, useState } from "react";
 import api from '@/lib/api/api';
+import { createEducation, updateEducation } from "@/lib/api/educationApi";
+
 
 const empty = {
     institution: '',
@@ -38,9 +40,9 @@ const handleSubmit = async (e) => {
     setSaving(true);
     try {
         if (isEdit) {
-            await api.put(`/education/${selected._id}`, form);
+            await updateEducation(selected._id, form);
         } else {
-            await api.post(`/education`, form);
+            await createEducation(form);
         }
         onSaved?.();
         setForm(empty);
