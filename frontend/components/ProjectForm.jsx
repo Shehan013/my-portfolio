@@ -1,6 +1,7 @@
 'use client'
 import { use, useEffect, useState } from "react";
 import api from '@/lib/api/api';
+import { createProject, updateProject } from "@/lib/api/projectApi";
 
 const empty = {
     projectName: '',
@@ -56,9 +57,9 @@ export default function ProjectForm({ selected, onSaved }){
 
         try{
             if (isEdit) {
-                await api.put(`/projects/${selected._id}`, form);
+                await updateProject(selected._id, form);
             } else {
-                await api.post('/projects', form);
+                await createProject(form);
             }
             onSaved?.();
             setForm(empty);
@@ -77,7 +78,7 @@ export default function ProjectForm({ selected, onSaved }){
             <input name="techStack" value={form.techStack} onChange={handleChange} placeholder="Tech Stack (comma separated)" className="w-full border px-3 py-2 rounded" required />
             <input name="role" value={form.role} onChange={handleChange} placeholder="Role" className="w-full border px-3 py-2 rounded" required />
             <input name="startDate" value={form.startDate} onChange={handleChange} placeholder="Start Date" className="w-full border px-3 py-2 rounded" required />
-            <input name="endDate" value={form.endDate} onChange={handleChange} placeholder="End Date" className="w-full border px-3 py-2 rounded" required />
+            <input name="endDate" value={form.endDate} onChange={handleChange} placeholder="End Date" className="w-full border px-3 py-2 rounded"/>
             <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" className="w-full border px-3 py-2 rounded" required />
             <input name="contributions" value={form.contributions} onChange={handleChange} placeholder="Contributions (comma separated)" className="w-full border px-3 py-2 rounded" required />
             <input name="link" value={form.link} onChange={handleChange} placeholder="Project Link" className="w-full border px-3 py-2 rounded"/>

@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import api from '@/lib/api/api';
+import { getAllProjects, deleteProject } from "@/lib/api/projectApi";
 
 export default function ProjectList({admin = false, onEdit}){
     const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function ProjectList({admin = false, onEdit}){
     const fetchData = async () => {
         setLoading(true);
         try{
-            const { data } = await api.get('/projects');
+            const { data } = await getAllProjects();
             setItems(data); 
         } catch (err){
             console.error('Error fetching projects:', err);
@@ -23,7 +24,7 @@ export default function ProjectList({admin = false, onEdit}){
     const handleDelete = async (id) => {
         if(!confirm('Are you sure you want to delete this project?')) return;
         try{
-            await api.delete(`/projects/${id}`);
+            await deleteProject(id);
             await fetchData();
         } catch (err){
             console.error('Error deleting project:', err);
