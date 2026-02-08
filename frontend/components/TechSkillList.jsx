@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import api from '@/lib/api/api';
+import { getAllTechSkills, deleteTechSkill } from "@/lib/api/techSkillApi";
 
 export default function TechSkillList({admin = false, onEdit}){
     const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function TechSkillList({admin = false, onEdit}){
     const fetchData = async () => {
         setloading(true);
         try{
-            const { data } = await api.get('/techSkills');
+            const { data } = await getAllTechSkills();
             setItems(data);
         } catch (err){
             console.error(err);
@@ -23,7 +24,7 @@ export default function TechSkillList({admin = false, onEdit}){
     const handleDelete = async (id) => {
         if(!confirm("Are you sure you want to delete this item?")) return;
         try{
-            await api.delete(`/techSkills/${id}`);
+            await deleteTechSkill(id);
             await fetchData();
         } catch (err){
             console.error(err);

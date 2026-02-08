@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import api from '@/lib/api/api';
+import { createTechSkill, updateTechSkill } from "@/lib/api/techSkillApi";
 
 const empty = {
     name : '',
@@ -32,9 +33,9 @@ export default function TechSkillForm({ selected, onSaved}){
         setSaving(true);
         try{
             if (isEdit){
-                await api.put(`/techSkills/${selected._id}`, form);
+                await updateTechSkill(selected._id, form);
             } else {
-                await api.post('/techSkills', form);
+                await createTechSkill(form);
             }
             onSaved?.();
             setForm(empty);
