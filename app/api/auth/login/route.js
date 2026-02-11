@@ -1,5 +1,5 @@
 import connectDB from "@/lib/mongodb";
-import Admin from "@lib/models/Admin";
+import Admin from "@/lib/models/Admin";
 import { comparePassword } from "@/lib/utils/password";
 import { generateAccessToken, generateRefreshToken } from "@/lib/utils/jwt";    
 import { serialize } from "cookie";
