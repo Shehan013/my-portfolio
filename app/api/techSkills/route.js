@@ -1,6 +1,7 @@
 import connectDB from "@/lib/mongodb";
 import TechSkill from "@/lib/models/TechSkill";
 import { validateTechSkill } from "@/lib/validators/validateTechSkill";
+import { requireAuth } from "@/lib/middleware/auth";
 
 export async function GET(request) {
     try {
@@ -14,6 +15,12 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+
+    const { isAuthenticated } = await requireAuth(request);
+    if(!isAuthenticated) {
+        return Response.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    
     try {
         await connectDB();
         const body = await request.json();
