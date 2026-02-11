@@ -1,6 +1,7 @@
 import connectDB from "@/lib/mongodb";
 import Project from "@/lib/models/Project";
 import { validateProject } from "@/lib/validators/validateProject";
+import { requireAuth } from "@/lib/middleware/auth";
 
 export async function GET(req, { params }) {
     await connectDB();
@@ -15,6 +16,12 @@ export async function GET(req, { params }) {
 }
 
 export async function PUT(req, { params }) {
+
+    const { isAuthenticated } = await requireAuth(req);
+    if(!isAuthenticated) {
+        return Response.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     await connectDB();
 
     const { projectId } = await params;
@@ -34,6 +41,11 @@ export async function PUT(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
+    const { isAuthenticated } = await requireAuth(req);
+    if(!isAuthenticated) {
+        return Response.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     await connectDB();
 
     const { projectId } = await params;
