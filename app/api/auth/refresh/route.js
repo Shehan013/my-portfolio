@@ -1,4 +1,4 @@
-import { verifyAccessToke, generateAccessToken } from "@/lib/utils/jwt";
+import { verifyRefreshToken, generateAccessToken } from "@/lib/utils/jwt";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
 
@@ -12,7 +12,7 @@ export async function POST(request) {
         }
 
     // Verify refresh token
-    const payload = verifyAccessToke(refreshToken);
+    const payload = verifyRefreshToken(refreshToken);
 
     if(!payload) {
         return Response.json({ message: "Invalid or expired refresh token" }, { status: 401 });
