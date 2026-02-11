@@ -58,8 +58,17 @@ export async function POST(request) {
             maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
             path: "/"
         }));
+
+        response.headers.append("Set-Cookie", serialize("accessToken", accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            maxAge: 15 * 60, // 15 minutes in seconds
+            path: "/"
+        }));
         
         return response;
+        
     } catch (error) {
         console.error("Login error:", error);
         return Response.json({ message: "Internal server error" }, { status: 500 });
